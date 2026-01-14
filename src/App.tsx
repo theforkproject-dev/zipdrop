@@ -12,13 +12,24 @@ const DEBOUNCE_MS = 300;
 const MAX_RECENT_UPLOADS = 10;
 
 const ALLOWED_EXTENSIONS = new Set([
-  "jpg", "jpeg", "png", "gif", "bmp", "tiff", "tif", "webp", "heic", "heif",
-  "pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx", "txt", "rtf", "csv",
-  "zip", "tar", "gz", "7z", "rar",
-  "mov", "mp4", "avi", "mkv", "webm", "m4v",
-  "mp3", "wav", "aac", "flac", "m4a", "ogg",
-  "json", "xml", "html", "css", "js", "ts", "py", "rs", "go", "swift",
-  "svg", "ico", "dmg", "pkg", "app",
+  // Images
+  "jpg", "jpeg", "png", "gif", "bmp", "tiff", "tif", "webp", "heic", "heif", "svg", "ico", "raw", "cr2", "nef", "arw",
+  // Documents
+  "pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx", "txt", "rtf", "csv", "md", "markdown", "pages", "numbers", "key",
+  // Archives
+  "zip", "tar", "gz", "7z", "rar", "bz2", "xz", "tgz",
+  // Video
+  "mov", "mp4", "avi", "mkv", "webm", "m4v", "wmv", "flv", "3gp",
+  // Audio
+  "mp3", "wav", "aac", "flac", "m4a", "ogg", "wma", "aiff",
+  // Code & Data
+  "json", "xml", "html", "css", "js", "ts", "jsx", "tsx", "py", "rs", "go", "swift", "java", "c", "cpp", "h", "rb", "php", "sh", "bash", "zsh", "yaml", "yml", "toml", "ini", "sql", "graphql",
+  // macOS/Apps
+  "dmg", "pkg", "app", "ipa",
+  // Fonts
+  "ttf", "otf", "woff", "woff2", "eot",
+  // Other
+  "log", "env", "gitignore", "dockerfile",
 ]);
 
 // =============================================================================
@@ -133,6 +144,9 @@ function App() {
         // Invalid JSON
       }
     }
+
+    // Ensure window can receive keyboard events
+    window.focus();
   }, []);
 
   // Save uploads to localStorage whenever they change
@@ -217,11 +231,17 @@ function App() {
         setState("success");
         setStatusText(result.is_demo ? "Saved to Downloads!" : "Copied to clipboard!");
 
+        // Reset UI after 2 seconds, then auto-hide window after 10 seconds
         setTimeout(() => {
           setState("idle");
           setStatusText("");
           setCurrentFileName("");
         }, 2000);
+
+        setTimeout(() => {
+          console.log("Auto-hiding window after 10 seconds");
+          getCurrentWindow().hide();
+        }, 10000);
 
       } catch (error) {
         console.error("Error:", error);

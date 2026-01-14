@@ -1,8 +1,8 @@
 [package]
 name = "zipdrop"
-version = "0.1.0"
-description = "A Tauri App"
-authors = ["you"]
+version = "1.0.0"
+description = "A macOS menu bar app for instant file uploads to Cloudflare R2"
+authors = ["Metalayer"]
 edition = "2021"
 
 [lib]

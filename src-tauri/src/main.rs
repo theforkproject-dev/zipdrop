@@ -12,7 +12,7 @@ use config::{
 use std::path::PathBuf;
 use std::sync::Mutex;
 use tauri::{
-    menu::{Menu, MenuItem},
+    menu::{Menu, MenuItem, PredefinedMenuItem},
     tray::{MouseButton, MouseButtonState, TrayIconBuilder, TrayIconEvent},
     Manager, PhysicalPosition,
 };
@@ -263,14 +263,18 @@ fn main() {
         .setup(|app| {
             let window = app.get_webview_window("main").unwrap();
 
-            // Apply vibrancy - use Menu for consistent appearance regardless of focus
+            // Apply native macOS vibrancy effect
             #[cfg(target_os = "macos")]
             apply_vibrancy(&window, NSVisualEffectMaterial::Menu, None, Some(12.0))
-                .expect("Unsupported platform! 'apply_vibrancy' is only supported on macOS");
+                .expect("Failed to apply vibrancy");
 
             // Build tray menu
+            let version = app.package_info().version.to_string();
+            let version_item = MenuItem::with_id(app, "version", format!("Version {}", version), false, None::<&str>)?;
+            let check_updates = MenuItem::with_id(app, "check_updates", "Check for Updates...", true, None::<&str>)?;
+            let separator = PredefinedMenuItem::separator(app)?;
             let quit_item = MenuItem::with_id(app, "quit", "Quit ZipDrop", true, Some("CmdOrCtrl+Q"))?;
-            let tray_menu = Menu::with_items(app, &[&quit_item])?;
+            let tray_menu = Menu::with_items(app, &[&version_item, &check_updates, &separator, &quit_item])?;
 
             // Build tray icon
             let _tray = TrayIconBuilder::new()
@@ -309,8 +313,14 @@ fn main() {
                     }
                 })
                 .on_menu_event(|app, event| {
-                    if event.id.as_ref() == "quit" {
-                        app.exit(0);
+                    match event.id.as_ref() {
+                        "quit" => app.exit(0),
+                        "check_updates" => {
+                            let _ = std::process::Command::new("open")
+                                .arg("https://github.com/theforkproject-dev/zipdrop/releases")
+                                .spawn();
+                        }
+                        _ => {}
                     }
                 })
                 .build(app)?;
