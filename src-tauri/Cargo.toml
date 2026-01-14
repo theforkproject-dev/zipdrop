@@ -1,0 +1,47 @@
+[package]
+name = "zipdrop"
+version = "0.1.0"
+description = "A Tauri App"
+authors = ["you"]
+edition = "2021"
+
+[lib]
+name = "zipdrop_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = ["tray-icon", "macos-private-api"] }
+tauri-plugin-opener = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+window-vibrancy = "0.5"
+
+# Image processing
+image = { version = "0.25", features = ["webp"] }
+
+# Zip archives
+zip = { version = "2", default-features = false, features = ["deflate"] }
+
+# S3/R2 uploads
+rust-s3 = { version = "0.35", default-features = false, features = ["tokio-rustls-tls"] }
+
+# Clipboard
+arboard = "3"
+
+# Async runtime
+tokio = { version = "1", features = ["full"] }
+
+# UUID for unique filenames
+uuid = { version = "1", features = ["v4"] }
+
+# Secure credential storage (macOS Keychain)
+keyring = { version = "3", features = ["apple-native"] }
+
+# Directories for app data
+dirs = "5"
+
+# Temp file cleanup
+tempfile = "3"
