@@ -12,6 +12,7 @@ use config::{
 use std::path::PathBuf;
 use std::sync::Mutex;
 use tauri::{
+    include_image,
     menu::{Menu, MenuItem, PredefinedMenuItem},
     tray::{MouseButton, MouseButtonState, TrayIconBuilder, TrayIconEvent},
     Manager, PhysicalPosition,
@@ -276,9 +277,10 @@ fn main() {
             let quit_item = MenuItem::with_id(app, "quit", "Quit ZipDrop", true, Some("CmdOrCtrl+Q"))?;
             let tray_menu = Menu::with_items(app, &[&version_item, &check_updates, &separator, &quit_item])?;
 
-            // Build tray icon
+            // Build tray icon with custom icon
+            let tray_icon = include_image!("icons/tray-icon.png");
             let _tray = TrayIconBuilder::new()
-                .icon(app.default_window_icon().unwrap().clone())
+                .icon(tray_icon)
                 .icon_as_template(true)
                 .menu(&tray_menu)
                 .show_menu_on_left_click(false)

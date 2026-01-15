@@ -13,19 +13,23 @@ pub const MAX_TOTAL_SIZE: u64 = 1024 * 1024 * 1024; // 1GB
 // Allowed file extensions
 const ALLOWED_EXTENSIONS: &[&str] = &[
     // Images
-    "jpg", "jpeg", "png", "gif", "bmp", "tiff", "tif", "webp", "heic", "heif",
+    "jpg", "jpeg", "png", "gif", "bmp", "tiff", "tif", "webp", "heic", "heif", "svg", "ico", "raw", "cr2", "nef", "arw",
     // Documents
-    "pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx", "txt", "rtf", "csv",
+    "pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx", "txt", "rtf", "csv", "md", "markdown", "pages", "numbers", "key",
     // Archives
-    "zip", "tar", "gz", "7z", "rar",
+    "zip", "tar", "gz", "7z", "rar", "bz2", "xz", "tgz",
     // Video
-    "mov", "mp4", "avi", "mkv", "webm", "m4v",
+    "mov", "mp4", "avi", "mkv", "webm", "m4v", "wmv", "flv", "3gp",
     // Audio
-    "mp3", "wav", "aac", "flac", "m4a", "ogg",
-    // Code/Data
-    "json", "xml", "html", "css", "js", "ts", "py", "rs", "go", "swift",
+    "mp3", "wav", "aac", "flac", "m4a", "ogg", "wma", "aiff",
+    // Code & Data
+    "json", "xml", "html", "css", "js", "ts", "jsx", "tsx", "py", "rs", "go", "swift", "java", "c", "cpp", "h", "rb", "php", "sh", "bash", "zsh", "yaml", "yml", "toml", "ini", "sql", "graphql",
+    // macOS/Apps
+    "dmg", "pkg", "app", "ipa",
+    // Fonts
+    "ttf", "otf", "woff", "woff2", "eot",
     // Other
-    "svg", "ico", "dmg", "pkg", "app",
+    "log", "env", "gitignore", "dockerfile",
 ];
 
 /// Result of processing files
